@@ -1,6 +1,7 @@
 package com.ostapko.lab2listview;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,11 @@ import java.util.List;
 public class AnimalAdapter extends BaseAdapter {
 
     private List<Animal> animals;
-    private LayoutInflater inflator;
+    private LayoutInflater mInflater;
 
     public AnimalAdapter(List<Animal> animals, Activity activity) {
+        mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.animals = animals;
-        inflator = activity.getLayoutInflater();
     }
 
     @Override
@@ -40,12 +41,15 @@ public class AnimalAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View rowView;
 
-        rowView = inflator.inflate(R.layout.listview_row, null);
-        TextView textView = rowView.findViewById(R.id.label);
-        textView.setText(animals.get(i).getType());
+        rowView = mInflater.inflate(R.layout.listview_row, null);
 
+        TextView textView = rowView.findViewById(R.id.label);
         ImageView imageView = rowView.findViewById(R.id.imageView);
-        imageView.setImageResource(animals.get(i).getPicId());
+
+        Animal animal = animals.get(i);
+
+        textView.setText(animal.getType());
+        imageView.setImageResource(animal.getPicId());
 
         return null;
     }
