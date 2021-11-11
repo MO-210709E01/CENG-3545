@@ -2,6 +2,7 @@ package com.ostapko.lab_6moviebrowser;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,19 @@ public class MyMovieRecyclerViewAdapter extends RecyclerView.Adapter<MyMovieRecy
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(position + 1 + "");
         holder.mContentView.setText(mValues.get(position).getName());
+
+        holder.mContentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.movieSelected(holder.mItem);
+                    notifyItemChanged(selectedIndex);
+                    selectedIndex = holder.getLayoutPosition();
+                    notifyItemChanged(selectedIndex);
+                }
+            }
+        });
+        holder.itemView.setBackgroundColor(selectedIndex == position ? Color.GREEN : Color.TRANSPARENT);
     }
 
     @Override
@@ -55,12 +69,6 @@ public class MyMovieRecyclerViewAdapter extends RecyclerView.Adapter<MyMovieRecy
             super(binding.getRoot());
             mIdView = binding.itemNumber;
             mContentView = binding.content;
-            mContentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
         }
 
         @Override
